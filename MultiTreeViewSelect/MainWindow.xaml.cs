@@ -1,6 +1,7 @@
 ﻿using MultiTreeViewSelect.Viewmodel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,8 @@ namespace MultiTreeViewSelect
             rootnode.Name = "RootNode";
             rootnode.AddWBSChild(new ANodeItem("node A"));
             rootnode.AddWBSChild(new BNodeItem("node B"));
-
-            DataContext = rootnode;
+            DataContext = new ObservableCollection<NodeItem> { rootnode };
+           // DataContext = rootnode;
         }
     }
 }

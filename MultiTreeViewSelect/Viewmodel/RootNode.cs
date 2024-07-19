@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace MultiTreeViewSelect.Viewmodel
 {
@@ -11,9 +13,14 @@ namespace MultiTreeViewSelect.Viewmodel
     {
         public ObservableCollection<IWBSChild> Children { get; set; } = new ObservableCollection<IWBSChild>();
         public ReadOnlyCollection<IWBSChild> WBSChildren => new ReadOnlyCollection<IWBSChild>(Children);
-
+        public ICommand AddCommand { get; set; }
+        public RootNode()
+        {
+            AddCommand = new RelayCommand<object>(null, Add);
+        }
         public void AddWBSChild(IWBSChild oChild)
         {
+           
             if (oChild is ANodeItem || oChild is BNodeItem)
             {
                 oChild.WBSParent = this;
@@ -45,6 +52,12 @@ namespace MultiTreeViewSelect.Viewmodel
                 oChild.WBSParent = null;
                 OnPropertyChanged(nameof(Children));
             }
+        }
+        public void Add(object selectedObject)
+        {
+            // have 2 option if user select ANode=> Add Anode
+            //if user select BNote=>Add Bnode
+
         }
     }
 }

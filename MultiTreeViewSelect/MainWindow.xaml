@@ -30,7 +30,7 @@
 
         <Grid Grid.Row="1">
             <ScrollViewer Margin="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Controls:MultiSelectTreeView ItemsSource="{Binding Children}" >
+                <Controls:MultiSelectTreeView ItemsSource="{Binding  }" >
                     <Controls:MultiSelectTreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type Controls:MultiSelectTreeViewItem}">
                             <Setter Property="DisplayName" Value="{Binding Name, Mode=TwoWay}"/>
@@ -48,7 +48,7 @@
 
                     <Controls:MultiSelectTreeView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Add" Command="{Binding UpdateViewCmd}" CommandParameter="{Binding }"/>
+                            <MenuItem Header="Add" Command="{Binding AddCommand}" CommandParameter="{Binding }"/>
                             <MenuItem Header="Edit" Command="{Binding ModifyViewCmd}" CommandParameter="{Binding Children}"/>
                             <MenuItem Header="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding Children}"/>
                             <MenuItem Header="Copy" Command="{Binding CutNodeCmd}" CommandParameter="{Binding Children}"/>
