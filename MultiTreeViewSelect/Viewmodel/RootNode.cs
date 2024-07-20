@@ -16,7 +16,7 @@ namespace MultiTreeViewSelect.Viewmodel
         public ICommand AddCommand { get; set; }
         public RootNode()
         {
-            AddCommand = new RelayCommand<object>(null, Add);
+            AddCommand = new RelayCommand<IEnumerable<object>>(CanExecuteAddCommand, ExecuteAddCommand);
         }
         public void AddWBSChild(IWBSChild oChild)
         {
@@ -58,6 +58,31 @@ namespace MultiTreeViewSelect.Viewmodel
             // have 2 option if user select ANode=> Add Anode
             //if user select BNote=>Add Bnode
 
+        }
+
+        private bool CanExecuteAddCommand(IEnumerable<object> commandParameter)
+        {
+            IEnumerable<NodeItem> selectedNodes = commandParameter.Cast<NodeItem>();
+
+            // Because you want to disable and hide the "Add" menu item
+            // when the context menu is opened with a BNodeItem
+            // simply return false if the selected items collection contains a BNodeItem.
+            return !selectedNodes.Any(node => node is BNodeItem);
+        }
+        public void ExecuteAddCommand(IEnumerable<object> commandParameter)
+        {
+            IEnumerable<NodeItem> selectedNodes = commandParameter.Cast<NodeItem>();
+
+            // have 2 option if user select ANode=> Add Anode
+            //if user select BNote=>Add Bnode
+
+            foreach (NodeItem selectedNode in selectedNodes)
+            {
+                // Because of CanExecuteAddCommand the items are all ANodeItems (for this AddCommand)
+                var aNodeItem = (ANodeItem)selectedNode;
+
+                // TODO::Handle ANodeItem
+            }
         }
     }
 }
