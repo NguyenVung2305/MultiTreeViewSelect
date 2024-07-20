@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +14,8 @@ namespace MultiTreeViewSelect.Viewmodel.ObjectValue
         public string Header { get; set; }
         public ICommand Command { get; set; }
         public ObservableCollection<MenuItemViewModel> SubMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
+
+      
+
     }
 }

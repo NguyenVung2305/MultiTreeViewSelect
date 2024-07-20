@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Security;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,16 +22,19 @@ namespace MultiTreeViewSelect.Viewmodel
         public ICommand EditCommand { get; set; }
         public ICommand Option1Command { get; set; }
         public ICommand Option2Command { get; set; }
+        public ICommand OptionsCommand { get; private set; }
+
 
 
         public RootNode()
         {
-            AddCommand = new RelayCommand<IEnumerable<object>>(CanExecuteAddCommand, ExecuteAddCommand);
+
             CopyCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteCopyCommand);
             CutCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteCutCommand);
             EditCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteEditCommand);
             Option1Command = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteOption1Command);
             Option2Command = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteOption2Command);
+           
             UpdateContextMenuItems(new List<object>());
 
         }
@@ -75,10 +80,10 @@ namespace MultiTreeViewSelect.Viewmodel
 
         private bool CanExecuteAddCommand(IEnumerable<object> commandParameter)
         {
-            UpdateContextMenuItems(commandParameter);
+
             bool result = commandParameter.Count() == 1 && (commandParameter.First() is RootNode);
             return result;
-           
+
         }
 
         public void ExecuteAddCommand(IEnumerable<object> commandParameter)
@@ -124,32 +129,29 @@ namespace MultiTreeViewSelect.Viewmodel
             if (selectedItems.Count() == 1 && selectedItems.First() is ANodeItem)
             {
                 // Add only relevant options
-                ContextMenuItems.Add(new MenuItemViewModel { Header = "Edit", Command = EditCommand });
-                ContextMenuItems.Add(new MenuItemViewModel { Header = "Delete", Command = DeleteCommand });
+             
             }
             else
             {
                 var optionsMenuItem = new MenuItemViewModel { Header = "Options" };
-                var optionsSubMenuItems = new ObservableCollection<MenuItemViewModel>
-        {
-            new MenuItemViewModel { Header = "Option1", Command = Option1Command },
-            new MenuItemViewModel { Header = "Option2", Command = Option2Command }
-        };
-
-                // Add SubMenuItems to optionsMenuItem
-                foreach (var item in optionsSubMenuItems)
-                {
-                    optionsMenuItem.SubMenuItems.Add(item);
-                }
-
-                // Add all options
+                optionsMenuItem.SubMenuItems.Add(new MenuItemViewModel { Header = "Option1", Command = OptionsCommand });
+                optionsMenuItem.SubMenuItems.Add(new MenuItemViewModel { Header = "Option2", Command = OptionsCommand });
                 ContextMenuItems.Add(optionsMenuItem);
                 ContextMenuItems.Add(new MenuItemViewModel { Header = "Edit", Command = EditCommand });
                 ContextMenuItems.Add(new MenuItemViewModel { Header = "Delete", Command = DeleteCommand });
-            }
-            OnPropertyChanged(nameof(ContextMenuItems));
-        }
-        
 
+
+              
+
+
+                // Add SubMenuItems to optionsMenuItem
+
+
+                // Add all options
+
+            }
+          
+    }
+       
     }
 }

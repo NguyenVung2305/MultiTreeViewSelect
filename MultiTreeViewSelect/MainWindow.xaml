@@ -50,19 +50,16 @@
                     </Controls:MultiSelectTreeView.ItemContainerStyle>
 
                     <Controls:MultiSelectTreeView.ContextMenu>
-                        <ContextMenu  ItemsSource="{Binding ContextMenuItems}">
+                        <ContextMenu ItemsSource="{Binding ContextMenuItems}" >
                             <ContextMenu.ItemTemplate>
-                                <DataTemplate>
-                                    <MenuItem Header="{Binding Header, UpdateSourceTrigger=PropertyChanged}" Command="{Binding Command}">
-                                        <!-- Bind SubMenuItems if it exists -->
-                                        <MenuItem.ItemsSource>
-                                            <Binding Path="SubMenuItems" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"/>
-                                        </MenuItem.ItemsSource>
+                                <HierarchicalDataTemplate ItemsSource="{Binding SubMenuItems}">
+                                    <MenuItem Header="{Binding Header}" Command="{Binding Command}" HorizontalContentAlignment="Stretch" Width="150">
+                                        <!-- The HierarchicalDataTemplate automatically handles subitems -->
                                     </MenuItem>
-                                </DataTemplate>
+                                </HierarchicalDataTemplate>
                             </ContextMenu.ItemTemplate>
                         </ContextMenu>
-                        
+
                     </Controls:MultiSelectTreeView.ContextMenu>
 
                     <Controls:MultiSelectTreeView.Resources>
