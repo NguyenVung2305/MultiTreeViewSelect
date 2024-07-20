@@ -61,7 +61,7 @@
     <Compile Include="Viewmodel\ANodeItem.cs" />
     <Compile Include="Viewmodel\BNodeItem.cs" />
     <Compile Include="Viewmodel\NodeItem.cs" />
-    <Compile Include="Viewmodel\ObjectValue\AddMenuVisibilityConverter.cs" />
+    <Compile Include="Viewmodel\ObjectValue\BoolToVisibilityConverter.cs" />
     <Compile Include="Viewmodel\ObjectValue\BaseViewModel.cs" />
     <Compile Include="Viewmodel\ObjectValue\IWBSChild.cs" />
     <Compile Include="Viewmodel\ObjectValue\IWBSParent.cs" />

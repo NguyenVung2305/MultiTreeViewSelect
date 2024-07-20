@@ -15,27 +15,72 @@ namespace MultiTreeViewSelect.Viewmodel
         public ObservableCollection<IWBSChild> Children { get; set; } = new ObservableCollection<IWBSChild>();
         public ReadOnlyCollection<IWBSChild> WBSChildren => new ReadOnlyCollection<IWBSChild>(Children);
         public ObservableCollection<MenuItemViewModel> ContextMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
+        private IEnumerable<object> selectedNode;
+        public IEnumerable<object> SelectedNode
+        {
+            get => selectedNode;
+            set
+            {
+                selectedNode = value;
+                OnPropertyChanged(nameof(SelectedNode));
+            }
+        }
+        private bool _isRootNode;
+        public bool IsRootNode
+        {
+            get => _isRootNode;
+            set
+            {
+                _isRootNode = value;
+                OnPropertyChanged(nameof(IsRootNode));
+            }
+        }
 
+        private bool _isNode;
+        public bool IsNode
+        {
+            get => _isNode;
+            set
+            {
+                _isNode = value;
+                OnPropertyChanged(nameof(IsNode));
+            }
+        }
+
+        private bool _isLeafNode;
+        public bool IsLeafNode
+        {
+            get => _isLeafNode;
+            set
+            {
+                _isLeafNode = value;
+                OnPropertyChanged(nameof(IsLeafNode));
+            }
+        }
         public ICommand AddCommand { get; set; }
         public ICommand CopyCommand { get; set; }
         public ICommand CutCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand Option1Command { get; set; }
         public ICommand Option2Command { get; set; }
-        public ICommand OptionsCommand { get; private set; }
+        public ICommand OptionsCommand { get;  set; }
 
-
+        private IEnumerable<object> _selectedItem;  
+     
+       
 
         public RootNode()
         {
 
             CopyCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteCopyCommand);
+            AddCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteAddCommand);
             CutCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteCutCommand);
             EditCommand = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteEditCommand);
             Option1Command = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteOption1Command);
             Option2Command = new RelayCommand<IEnumerable<object>>(CanExecuteMultiSelectCommand, ExecuteOption2Command);
+            
            
-            UpdateContextMenuItems(new List<object>());
+           
 
         }
 
@@ -88,6 +133,7 @@ namespace MultiTreeViewSelect.Viewmodel
 
         public void ExecuteAddCommand(IEnumerable<object> commandParameter)
         {
+            UpdateContextMenuItems(commandParameter);
             // Add command logic
             AddWBSChild(new ANodeItem("node A1"));
             AddWBSChild(new BNodeItem("node B1"));
@@ -126,32 +172,29 @@ namespace MultiTreeViewSelect.Viewmodel
         {
             ContextMenuItems.Clear();
 
-            if (selectedItems.Count() == 1 && selectedItems.First() is ANodeItem)
+            // Reset flags
+            IsRootNode = false;
+            IsNode = false;
+            IsLeafNode = false;
+
+            if (selectedItems.All(item => item is RootNode))
             {
-                // Add only relevant options
-             
+                IsRootNode = true;
+                ContextMenuItems.Add(new MenuItemViewModel { Header = "Add Root", Command = AddCommand });
             }
-            else
+            else if (selectedItems.All(item => item is ANodeItem || item is BNodeItem))
             {
-                var optionsMenuItem = new MenuItemViewModel { Header = "Options" };
-                optionsMenuItem.SubMenuItems.Add(new MenuItemViewModel { Header = "Option1", Command = OptionsCommand });
-                optionsMenuItem.SubMenuItems.Add(new MenuItemViewModel { Header = "Option2", Command = OptionsCommand });
-                ContextMenuItems.Add(optionsMenuItem);
-                ContextMenuItems.Add(new MenuItemViewModel { Header = "Edit", Command = EditCommand });
-                ContextMenuItems.Add(new MenuItemViewModel { Header = "Delete", Command = DeleteCommand });
-
-
-              
-
-
-                // Add SubMenuItems to optionsMenuItem
-
-
-                // Add all options
-
+                IsNode = true;
+                ContextMenuItems.Add(new MenuItemViewModel { Header = "Add Node", Command = AddCommand });
+                ContextMenuItems.Add(new MenuItemViewModel { Header = "Add Leaf", Command = AddCommand });
             }
-          
-    }
-       
+           
+
+            ContextMenuItems.Add(new MenuItemViewModel { Header = "Edit", Command = EditCommand });
+            ContextMenuItems.Add(new MenuItemViewModel { Header = "Delete", Command = DeleteCommand });
+            ContextMenuItems.Add(new MenuItemViewModel { Header = "Copy", Command = CopyCommand });
+            ContextMenuItems.Add(new MenuItemViewModel { Header = "Cut", Command = CutCommand });
+        }
+
     }
 }

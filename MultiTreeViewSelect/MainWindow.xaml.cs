@@ -32,5 +32,7 @@ namespace MultiTreeViewSelect
             DataContext = new ObservableCollection<NodeItem> { rootnode };
            // DataContext = rootnode;
         }
+
+      
     }
 }

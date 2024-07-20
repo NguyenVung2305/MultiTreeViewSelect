@@ -8,14 +8,13 @@ using System.Windows.Data;
 
 namespace MultiTreeViewSelect.Viewmodel
 {
-    public class AddMenuVisibilityConverter : IValueConverter
+    public class BoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var items = value as IEnumerable<object>;
-            if (items != null && items.Count() == 1 && items.First() is RootNode)
+            if (value is bool boolValue)
             {
-                return Visibility.Visible;
+                return boolValue ? Visibility.Visible : Visibility.Collapsed;
             }
             return Visibility.Collapsed;
         }
