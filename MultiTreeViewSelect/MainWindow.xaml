@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiTreeViewSelect"
-         xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView" 
+        xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
         xmlns:vm="clr-namespace:MultiTreeViewSelect.Viewmodel"
         mc:Ignorable="d"
-              MinWidth="200" MinHeight="600" Width="auto">
-
+        MinWidth="200" MinHeight="600" Width="auto">
+    
+    <!--<Window.Resources>
+        <vm:AddMenuVisibilityConverter x:Key="AddMenuVisibilityConverter"/>
+    </Window.Resources>-->
+    
     <Grid Background="#bdc3c7">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -18,19 +22,19 @@
         <Grid Grid.Row="0">
             <DockPanel Margin="1">
                 <Button Name="SearchBtn" VerticalAlignment="Center" Height="20" Width="50"
-                    Content="Search"
-                    Command="{Binding SearchCommand}"
-                    DockPanel.Dock="Right" />
+                        Content="Search"
+                        Command="{Binding SearchCommand}"
+                        DockPanel.Dock="Right" />
                 <TextBox Name="SearchBox"
-                     ToolTip="Search..."
-                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                     HorizontalAlignment="Stretch" />
+                         ToolTip="Search..."
+                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalAlignment="Stretch" />
             </DockPanel>
         </Grid>
 
         <Grid Grid.Row="1">
             <ScrollViewer Margin="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Controls:MultiSelectTreeView ItemsSource="{Binding }" >
+                <Controls:MultiSelectTreeView ItemsSource="{Binding }">
                     <Controls:MultiSelectTreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type Controls:MultiSelectTreeViewItem}">
                             <Setter Property="DisplayName" Value="{Binding Name, Mode=TwoWay}"/>
@@ -42,37 +46,38 @@
                             <Setter Property="IsEditable" Value="{Binding IsEditable, Mode=TwoWay}"/>
                             <Setter Property="IsEditing" Value="{Binding IsEditing, Mode=TwoWay}"/>
                             <Setter Property="Remarks" Value="{Binding Remarks, Mode=TwoWay}"/>
-
                         </Style>
                     </Controls:MultiSelectTreeView.ItemContainerStyle>
 
                     <Controls:MultiSelectTreeView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Add" Command="{Binding AddCommand}" />
-                            <MenuItem Header="Edit" Command="{Binding ModifyViewCmd}" CommandParameter="{Binding }"/>
-                            <MenuItem Header="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding }"/>
-                            <MenuItem Header="Copy" Command="{Binding CutNodeCmd}" CommandParameter="{Binding }"/>
-                            <MenuItem Header="Cut" Command="{Binding CutNodeCmd}" CommandParameter="{Binding }"/>
-                            <MenuItem Header="Paste" Command="{Binding PasteNodeCmd}" CommandParameter="{Binding }"/>
+                        <ContextMenu  ItemsSource="{Binding ContextMenuItems}">
+                            <ContextMenu.ItemTemplate>
+                                <DataTemplate>
+                                    <MenuItem Header="{Binding Header, UpdateSourceTrigger=PropertyChanged}" Command="{Binding Command}">
+                                        <!-- Bind SubMenuItems if it exists -->
+                                        <MenuItem.ItemsSource>
+                                            <Binding Path="SubMenuItems" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"/>
+                                        </MenuItem.ItemsSource>
+                                    </MenuItem>
+                                </DataTemplate>
+                            </ContextMenu.ItemTemplate>
                         </ContextMenu>
+                        
                     </Controls:MultiSelectTreeView.ContextMenu>
-
 
                     <Controls:MultiSelectTreeView.Resources>
                         <Style TargetType="MenuItem">
                             <Setter Property="CommandParameter"
-                          Value="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Controls:MultiSelectTreeView.SelectedItems)}" />
-
-                                        <!-- Hide all disabled MenuItems -->
-                                        <Style.Triggers>
-                                            <Trigger Property="IsEnabled"
-                              Value="False">
-                                                <Setter Property="Visibility"
-                              Value="Collapsed" />
-                                            </Trigger>
-                                        </Style.Triggers>
+                                    Value="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Controls:MultiSelectTreeView.SelectedItems)}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled"
+                                         Value="False">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
-                        
+
                         <HierarchicalDataTemplate DataType="{x:Type vm:RootNode}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="14"/>
@@ -82,35 +87,20 @@
 
                         <HierarchicalDataTemplate DataType="{x:Type vm:ANodeItem}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png"  Width="14"/>
+                                <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="14"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
                             </StackPanel>
                         </HierarchicalDataTemplate>
 
                         <HierarchicalDataTemplate DataType="{x:Type vm:BNodeItem}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png"  Width="30"/>
+                                <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="30"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
                             </StackPanel>
                         </HierarchicalDataTemplate>
-
-                     
                     </Controls:MultiSelectTreeView.Resources>
-
-                    <!--<i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding TreeViewSelectionChangedCmd}" CommandParameter="{Binding Children}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding TreeViewSelectionDoubleClickChangedCmd}" CommandParameter="{Binding Children}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>-->
-
-
                 </Controls:MultiSelectTreeView>
             </ScrollViewer>
         </Grid>
-
     </Grid>
-
 </Window>
