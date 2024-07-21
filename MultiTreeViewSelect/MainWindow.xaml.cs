@@ -25,12 +25,12 @@ namespace MultiTreeViewSelect
         public MainWindow()
         {
             InitializeComponent();
-            var rootnode=new RootNode(); 
+            var rootnode = new RootNode();
             rootnode.Name = "RootNode";
             rootnode.AddWBSChild(new ANodeItem("node A"));
             rootnode.AddWBSChild(new BNodeItem("node B"));
+
             DataContext = new ObservableCollection<NodeItem> { rootnode };
-           // DataContext = rootnode;
         }
 
       

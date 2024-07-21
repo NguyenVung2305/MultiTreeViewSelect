@@ -11,7 +11,6 @@ namespace MultiTreeViewSelect.Viewmodel
     {
         Guid Oid { get; set; }
         ReadOnlyCollection<IWBSChild> WBSChildren { get; }
-        bool BelongsToWBS(IWBSChild oItemChild);
         IWBSChild FindWbsChild(Guid oid);
         void AddWBSChild(IWBSChild oChild);
         void RemoveWBSChild(IWBSChild oChild);

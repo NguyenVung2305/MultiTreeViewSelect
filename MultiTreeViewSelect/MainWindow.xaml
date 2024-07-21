@@ -7,19 +7,11 @@
         xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
         xmlns:vm="clr-namespace:MultiTreeViewSelect.Viewmodel"
         mc:Ignorable="d"
-       
         MinWidth="200" MinHeight="600" Width="auto">
 
-    <Window.Resources>
-        <vm:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <ContextMenu x:Key="CommonContextMenu">
-            <MenuItem Header="Edit" Command="{Binding ModifyViewCmd}" />
-            <MenuItem Header="Delete" Command="{Binding DeleteCommand}" />
-            <MenuItem Header="Copy" Command="{Binding CopyNodeCmd}" />
-            <MenuItem Header="Cut" Command="{Binding CutNodeCmd}" />
-            <MenuItem Header="Paste" Command="{Binding PasteNodeCmd}" />
-        </ContextMenu>
-    </Window.Resources>
+    <!--<Window.Resources>
+        <vm:AddMenuVisibilityConverter x:Key="AddMenuVisibilityConverter"/>
+    </Window.Resources>-->
 
     <Grid Background="#bdc3c7">
         <Grid.RowDefinitions>
@@ -42,9 +34,8 @@
 
         <Grid Grid.Row="1">
             <ScrollViewer Margin="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Controls:MultiSelectTreeView ItemsSource="{Binding  }"              >
-
-
+                <Controls:MultiSelectTreeView ItemsSource="{Binding  }"                                    
+                                              >
                     <Controls:MultiSelectTreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type Controls:MultiSelectTreeViewItem}">
                             <Setter Property="DisplayName" Value="{Binding Name, Mode=TwoWay}"/>
@@ -58,31 +49,23 @@
                             <Setter Property="Remarks" Value="{Binding Remarks, Mode=TwoWay}"/>
                         </Style>
                     </Controls:MultiSelectTreeView.ItemContainerStyle>
-                        
-                    <Controls:MultiSelectTreeView.ContextMenu>
 
+                    <!--<Controls:MultiSelectTreeView.ContextMenu>
                         <ContextMenu>
-
-                            <MenuItem Header="Edit"
-                            Command="{Binding ModifyViewCmd}" />
-                            <MenuItem Header="Delete"
-                            Command="{Binding DeleteCommand}" />
-                            <MenuItem Header="Copy"
-                            Command="{Binding CutNodeCmd}" />
-                            <MenuItem Header="Cut"
-                            Command="{Binding CutNodeCmd}" />
-                            <MenuItem Header="Paste"
-                            Command="{Binding PasteNodeCmd}" />
+                            <MenuItem Header="Add"
+                                Command="{Binding AddCommand}" />
+                            <MenuItem Header="Edit"   Command="{Binding ModifyViewCmd}" />
+                            <MenuItem Header="Delete"  Command="{Binding DeleteCommand}" />
+                            <MenuItem Header="Copy"   Command="{Binding CutNodeCmd}" />
+                            <MenuItem Header="Cut"   Command="{Binding CutNodeCmd}" />
+                            <MenuItem Header="Paste"  Command="{Binding PasteNodeCmd}" />
                         </ContextMenu>
-                    </Controls:MultiSelectTreeView.ContextMenu>
-
+                    </Controls:MultiSelectTreeView.ContextMenu>-->
 
                     <Controls:MultiSelectTreeView.Resources>
                         <Style TargetType="MenuItem">
                             <Setter Property="CommandParameter"
                                     Value="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Controls:MultiSelectTreeView.SelectedItems)}" />
-                          
-                            
                             <Style.Triggers>
                                 <Trigger Property="IsEnabled"
                                          Value="False">
@@ -93,33 +76,23 @@
                         </Style>
 
                         <HierarchicalDataTemplate DataType="{x:Type vm:RootNode}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal"  >
+                            <StackPanel Orientation="Horizontal">
                                 <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="14"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
-                                
-                                <StackPanel.ContextMenu >
+                                <StackPanel.ContextMenu>
                                     <ContextMenu>
-                                        
-                                        <MenuItem Header="Add" >
-                                            <MenuItem Header="Create Unit"/>
-                                            <MenuItem Header="Create Area"/>
-                                           
+                                        <MenuItem Header="Add">
+                                            <MenuItem Header="Create A Node" Command="{Binding AddCommand}"/>
+                                            <MenuItem Header="Create B Node" Command="{Binding AddCommand}"/>
                                         </MenuItem>
-                                        <MenuItem Header="Edit" Command="{Binding ModifyViewCmd}" />
-                                        <MenuItem Header="Delete" Command="{Binding DeleteCommand}" />
-                                        <MenuItem Header="Copy" Command="{Binding CopyNodeCmd}" />
-                                        <MenuItem Header="Cut" Command="{Binding CutNodeCmd}" />
-                                        <MenuItem Header="Paste" Command="{Binding PasteNodeCmd}" />
+                                        <MenuItem Header="Edit"   Command="{Binding ModifyViewCmd}" />
+                                        <MenuItem Header="Delete"  Command="{Binding DeleteCommand}" />
+                                        <MenuItem Header="Copy"   Command="{Binding CutNodeCmd}" />
+                                        <MenuItem Header="Cut"   Command="{Binding CutNodeCmd}" />
+                                        <MenuItem Header="Paste"  Command="{Binding PasteNodeCmd}" />
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
-                                
                             </StackPanel>
-                            
-                         
-
-
-
-
 
                         </HierarchicalDataTemplate>
 
@@ -127,6 +100,19 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="14"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Add">
+                                            <MenuItem Header="Create A Node" Command="{Binding AddCommand}"/>
+                                            <MenuItem Header="Create B Node" Command="{Binding AddCommand}"/>
+                                        </MenuItem>
+                                        <MenuItem Header="Edit"   Command="{Binding ModifyViewCmd}" />
+                                        <MenuItem Header="Delete"  Command="{Binding DeleteCommand}" />
+                                        <MenuItem Header="Copy"   Command="{Binding CutNodeCmd}" />
+                                        <MenuItem Header="Cut"   Command="{Binding CutNodeCmd}" />
+                                        <MenuItem Header="Paste"  Command="{Binding PasteNodeCmd}" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
 
@@ -134,6 +120,15 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="30"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Edit"   Command="{Binding ModifyViewCmd}" />
+                                        <MenuItem Header="Delete"  Command="{Binding DeleteCommand}" />
+                                        <MenuItem Header="Copy"   Command="{Binding CutNodeCmd}" />
+                                        <MenuItem Header="Cut"   Command="{Binding CutNodeCmd}" />
+                                        <MenuItem Header="Paste"  Command="{Binding PasteNodeCmd}" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </Controls:MultiSelectTreeView.Resources>
