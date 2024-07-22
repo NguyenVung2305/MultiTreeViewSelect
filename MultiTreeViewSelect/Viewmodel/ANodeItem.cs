@@ -19,7 +19,7 @@ namespace MultiTreeViewSelect.Viewmodel
         public ANodeItem(string name)
         {
             Name = name;
-            AddCommand = new RelayCommand<IEnumerable<object>>(CanExecuteAddCommand, ExecuteAddCommand);
+            AddCommand = new RelayCommand<IList<object>>(CanExecuteCommand, ExecuteAddCommand);
         }
 
         public void AddWBSChild(IWBSChild oChild)
@@ -64,16 +64,27 @@ namespace MultiTreeViewSelect.Viewmodel
             }
         }
 
-        private bool CanExecuteAddCommand(IEnumerable<object> commandParameter)
+        private bool CanExecuteCommand(object commandParameter)
         {
-            return commandParameter.Count() == 1 && (commandParameter.First() is ANodeItem);
+
+            return true;
         }
 
-        private void ExecuteAddCommand(IEnumerable<object> commandParameter)
+        private void ExecuteAddCommand(object commandParameter)
         {
-            if (CanExecuteAddCommand(commandParameter))
+            // IEnumerable<NodeItem> selectedNodes = commandParameter.Cast<NodeItem>();
+            // AddWBSChild(new ANodeItem("node A1"));
+            if (commandParameter is RootNode)
             {
-                Add(new ANodeItem("New ANode"));
+                AddWBSChild(new ANodeItem("root"));
+            }
+            else if (commandParameter is ANodeItem)
+            {
+                AddWBSChild(new ANodeItem("Aroot"));
+            }
+            else if (commandParameter is BNodeItem)
+            {
+                AddWBSChild(new ANodeItem("Broot"));
             }
         }
     }

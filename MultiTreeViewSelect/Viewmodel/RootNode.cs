@@ -12,7 +12,7 @@ namespace MultiTreeViewSelect.Viewmodel
     {
         public ObservableCollection<IWBSChild> Children { get; set; } = new ObservableCollection<IWBSChild>();
         public ReadOnlyCollection<IWBSChild> WBSChildren => new ReadOnlyCollection<IWBSChild>(Children);
-        public ObservableCollection<MenuItemViewModel> ContextMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
+        //public ObservableCollection<MenuItemViewModel> ContextMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
 
        
 
@@ -20,21 +20,48 @@ namespace MultiTreeViewSelect.Viewmodel
         public ICommand CopyCommand { get; set; }
         public ICommand CutCommand { get; set; }
         public ICommand EditCommand { get; set; }
-       
+        //private IEnumerable<object> _selectedItems;
+        //public IEnumerable<object> SelectedItems
+        //{
+        //    get => _selectedItems;
+        //    set
+        //    {
+        //        _selectedItems = value;
+        //        OnPropertyChanged(nameof(SelectedItems));
+        //    }
+        //}
 
+      
         public RootNode()
         {
-            AddCommand = new RelayCommand<IEnumerable<object>>(CanExecuteCommand, ExecuteAddCommand);
-           
+           // AddCommand = new RelayCommand<object>(CanExecuteCommand, ExecuteAddCommand);
+            AddCommand = new RelayCommand<IList<object>>(CanExecuteCommand,ExecuteAddCommand);
+
         }
 
-        private bool CanExecuteCommand(IEnumerable<object> parameter)
+        private bool CanExecuteCommand(IList<object> commandParameter)
         {
-          return parameter.Any();
+          
+            return true;
         }
-        private void ExecuteAddCommand(IEnumerable<object> parameter) 
+        private void ExecuteAddCommand(IList<object> commandParameter) 
         {
-            AddWBSChild(new ANodeItem("node A1"));
+            // IEnumerable<NodeItem> selectedNodes = commandParameter.Cast<NodeItem>();
+            // AddWBSChild(new ANodeItem("node A1"));
+            var selectedNode = commandParameter.FirstOrDefault();
+
+            if (selectedNode is RootNode)
+            {
+                AddWBSChild(new ANodeItem("root"));
+            }
+            else if (selectedNode is ANodeItem)
+            {
+                AddWBSChild(new ANodeItem("Aroot"));
+            }
+            else if (selectedNode is BNodeItem)
+            {
+                AddWBSChild(new ANodeItem("Broot"));
+            }
         }
 
 

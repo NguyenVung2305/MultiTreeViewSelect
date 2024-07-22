@@ -22,6 +22,7 @@ namespace MultiTreeViewSelect
     /// </summary>
     public partial class MainWindow : Window
     {
+       
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +34,6 @@ namespace MultiTreeViewSelect
             DataContext = new ObservableCollection<NodeItem> { rootnode };
         }
 
-      
+        
     }
 }
