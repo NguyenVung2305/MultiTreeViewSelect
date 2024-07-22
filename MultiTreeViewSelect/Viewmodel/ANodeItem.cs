@@ -72,20 +72,7 @@ namespace MultiTreeViewSelect.Viewmodel
 
         private void ExecuteAddCommand(object commandParameter)
         {
-            // IEnumerable<NodeItem> selectedNodes = commandParameter.Cast<NodeItem>();
-            // AddWBSChild(new ANodeItem("node A1"));
-            if (commandParameter is RootNode)
-            {
-                AddWBSChild(new ANodeItem("root"));
-            }
-            else if (commandParameter is ANodeItem)
-            {
-                AddWBSChild(new ANodeItem("Aroot"));
-            }
-            else if (commandParameter is BNodeItem)
-            {
-                AddWBSChild(new ANodeItem("Broot"));
-            }
+            AddWBSChild(new ANodeItem("root"));
         }
     }
 }

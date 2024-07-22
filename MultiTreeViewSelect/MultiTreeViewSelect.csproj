@@ -69,6 +69,7 @@
     <Compile Include="Viewmodel\ObjectValue\IWBSChild.cs" />
     <Compile Include="Viewmodel\ObjectValue\IWBSParent.cs" />
     <Compile Include="Viewmodel\ObjectValue\MenuItemViewModel.cs" />
+    <Compile Include="Viewmodel\ObjectValue\NodeContextMenuSelector.cs" />
     <Compile Include="Viewmodel\ObjectValue\SelectedItemsBehavior.cs" />
     <Compile Include="Viewmodel\RootNode.cs" />
     <Page Include="MainWindow.xaml">

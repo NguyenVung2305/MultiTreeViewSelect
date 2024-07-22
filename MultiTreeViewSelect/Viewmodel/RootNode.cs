@@ -12,11 +12,22 @@ namespace MultiTreeViewSelect.Viewmodel
     {
         public ObservableCollection<IWBSChild> Children { get; set; } = new ObservableCollection<IWBSChild>();
         public ReadOnlyCollection<IWBSChild> WBSChildren => new ReadOnlyCollection<IWBSChild>(Children);
+        private IList<object> _seletedNodes=new List<object>();
+        public  IList<object> SelectedNodes
+        {
+            get=> _seletedNodes;
+            set
+            {
+                _seletedNodes = value;
+                OnPropertyChanged(nameof(SelectedNodes));
+            }
+        }
         //public ObservableCollection<MenuItemViewModel> ContextMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
 
        
 
-        public ICommand AddCommand { get; set; }
+        public ICommand SelectedCommand { get; set; }
+        public ICommand AddAnodeCommand { get; set; }
         public ICommand CopyCommand { get; set; }
         public ICommand CutCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -34,8 +45,9 @@ namespace MultiTreeViewSelect.Viewmodel
       
         public RootNode()
         {
-           // AddCommand = new RelayCommand<object>(CanExecuteCommand, ExecuteAddCommand);
-            AddCommand = new RelayCommand<IList<object>>(CanExecuteCommand,ExecuteAddCommand);
+            // AddCommand = new RelayCommand<object>(CanExecuteCommand, ExecuteAddCommand);
+            SelectedCommand = new RelayCommand<IList<object>>(null, ExecuteSelectedNode);
+            AddAnodeCommand = new RelayCommand<IList<object>>(null, ExecuteAddAnodeCommand);
 
         }
 
@@ -44,24 +56,10 @@ namespace MultiTreeViewSelect.Viewmodel
           
             return true;
         }
-        private void ExecuteAddCommand(IList<object> commandParameter) 
+        private void ExecuteSelectedNode(IList<object> commandParameter) 
         {
-            // IEnumerable<NodeItem> selectedNodes = commandParameter.Cast<NodeItem>();
-            // AddWBSChild(new ANodeItem("node A1"));
-            var selectedNode = commandParameter.FirstOrDefault();
-
-            if (selectedNode is RootNode)
-            {
-                AddWBSChild(new ANodeItem("root"));
-            }
-            else if (selectedNode is ANodeItem)
-            {
-                AddWBSChild(new ANodeItem("Aroot"));
-            }
-            else if (selectedNode is BNodeItem)
-            {
-                AddWBSChild(new ANodeItem("Broot"));
-            }
+            SelectedNodes.Clear();
+            SelectedNodes = commandParameter.ToList();
         }
 
 
@@ -86,6 +84,16 @@ namespace MultiTreeViewSelect.Viewmodel
             Children.Remove(oChild);
             oChild.WBSParent = null;
             OnPropertyChanged(nameof(Children));
+        }
+        private bool CanExecuteCommand(object commandParameter)
+        {
+
+            return true;
+        }
+
+        private void ExecuteAddAnodeCommand(object commandParameter)
+        {
+            AddWBSChild(new ANodeItem("Anoderoot"));
         }
     }
 }

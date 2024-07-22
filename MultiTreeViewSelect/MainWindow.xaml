@@ -10,9 +10,9 @@
         mc:Ignorable="d" 
         MinWidth="200" MinHeight="600" Width="auto">
 
-    <!--<Window.Resources>
-        <vm:AddMenuVisibilityConverter x:Key="AddMenuVisibilityConverter"/>
-    </Window.Resources>-->
+    <Window.Resources>
+        
+    </Window.Resources>
 
     <Grid Background="#bdc3c7">
         <Grid.RowDefinitions>
@@ -36,7 +36,7 @@
         <Grid Grid.Row="1">
             <ScrollViewer Margin="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <Controls:MultiSelectTreeView ItemsSource="{Binding }"  x:Name="TreeView" >
-                   
+
                     <Controls:MultiSelectTreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type Controls:MultiSelectTreeViewItem}">
                             <Setter Property="DisplayName" Value="{Binding Name, Mode=TwoWay}"/>
@@ -51,10 +51,10 @@
                         </Style>
                     </Controls:MultiSelectTreeView.ItemContainerStyle>
 
-                    <Controls:MultiSelectTreeView.ContextMenu>
+                    <!--<Controls:MultiSelectTreeView.ContextMenu>
                         <ContextMenu>
-                            <!--<MenuItem Header="Add"
-                                            Command="{Binding AddCommand}" />-->
+                            <MenuItem Header="Add"
+                                            Command="{Binding AddCommand}" />
                             <MenuItem Header="Edit"
                                             Command="{Binding ModifyViewCmd}" />
                             <MenuItem Header="Delete"
@@ -66,7 +66,7 @@
                             <MenuItem Header="Paste"
                                             Command="{Binding PasteNodeCmd}" />
                         </ContextMenu>
-                    </Controls:MultiSelectTreeView.ContextMenu>
+                    </Controls:MultiSelectTreeView.ContextMenu>-->
 
                     <Controls:MultiSelectTreeView.Resources>
                         <Style TargetType="MenuItem">
@@ -85,7 +85,16 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="14"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
-                               
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Add"  >
+                                            <MenuItem Header="Creat A node" Command="{Binding AddAnodeCommand}" />
+                                            <MenuItem Header="Creat B node" Command="{Binding AddBnodeCommand}" />
+                                        </MenuItem>
+                                        <MenuItem Header="Edit Root Node" Command="{Binding EditCommand}" />
+                                        <MenuItem Header="Delete Root Node" Command="{Binding DeleteCommand}" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                             </StackPanel>
 
                         </HierarchicalDataTemplate>
@@ -94,7 +103,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/SketchRoute.Infatructure;component/View/Images/ProjectMananger/Project.png" Width="14"/>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="4,0,2,0"/>
-                              
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Add" Command="{Binding AddCommand}" />
+                                        <MenuItem Header="Edit Root Node" Command="{Binding EditCommand}" />
+                                        <MenuItem Header="Delete Root Node" Command="{Binding DeleteCommand}" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
 
@@ -110,7 +125,7 @@
                     <i:Interaction.Triggers>
 
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding AddCommand , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <i:InvokeCommandAction Command="{Binding SelectedCommand , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   CommandParameter="{Binding SelectedItems, ElementName=TreeView}"
                                                   />
                         </i:EventTrigger>
